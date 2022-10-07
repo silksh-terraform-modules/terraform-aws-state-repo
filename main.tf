@@ -25,6 +25,20 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "terraform_state" 
   }
 }
 
+
+resource "aws_s3_bucket_lifecycle_configuration" "bucket-config" {
+  bucket = aws_s3_bucket.terraform_state.bucket
+
+  rule {
+    id = "versions_expiring"
+      noncurrent_version_expiration {
+        noncurrent_days = var.noncurrent_version_expiration_days
+    }
+
+    status = var.noncurrent_version_expiration_status
+  }
+}
+
 resource "aws_dynamodb_table" "terraform_locks" {
   name         = "terraform-up-and-running-locks"
   billing_mode = "PAY_PER_REQUEST"
