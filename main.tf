@@ -25,6 +25,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "bucket-config" {
   bucket = aws_s3_bucket.terraform_state.bucket
   rule {
     id = "versions_expiring"
+    filter {}
     noncurrent_version_expiration {
       noncurrent_days = var.noncurrent_version_expiration_days
     }
